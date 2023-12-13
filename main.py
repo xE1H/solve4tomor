@@ -8,9 +8,9 @@ import jwt
 app.add_middleware(SessionMiddleware, secret_key="asdasdasda")
 
 rooms = [
-    "101",
-    "102",
-    "103"
+    "322",
+    "301",
+    "101"
 ]
 
 time_slots = [
@@ -104,7 +104,7 @@ async def reserve(room: str):
         return RedirectResponse(url="/main")
 
     already_reserved = app.storage.general.get("reservations_" + room, [])
-    today = datetime.datetime.now()
+    today = datetime.datetime.fromisoformat("2024-05-01T00:01:00")
     dates = []
 
     def reserve_room():
