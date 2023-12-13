@@ -16,9 +16,6 @@ rooms = [
 
 @ui.page("/")
 async def index():
-    if not app.storage.user.get("name"):
-        return RedirectResponse(url="/login")
-
     return RedirectResponse(url="/main")
 
 
@@ -60,9 +57,6 @@ async def main():
 async def reserve(room: str):
     if room not in rooms:
         return RedirectResponse(url="/main")
-
-    if not app.storage.user.get("name"):
-        return RedirectResponse(url="/login")
 
     already_reserved = app.storage.general.get("reservations_" + room, [])
     today = datetime.datetime.now()
@@ -114,20 +108,6 @@ async def cancel(room: str, date: str):
             reservations.remove(reservation)
             app.storage.general["reservations_" + room] = reservations
 
-    return RedirectResponse(url="/main")
-
-
-@ui.page("/login")
-async def login():
-    return RedirectResponse(
-        url="https://id.licejus.lt/v2.0/authorize?client_id=reserrvation&redirect_uri=http://localhost:8080/auth")
-
-
-@ui.page("/auth")
-async def auth(id_token: str):
-    # Parse jwt
-    payload = jwt.decode(id_token, options={"verify_signature": False})
-    app.storage.user["name"] = payload["name"]
     return RedirectResponse(url="/")
 
 
