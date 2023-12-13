@@ -32,6 +32,7 @@ time_slots = [
 
 @ui.page("/")
 async def index():
+    app.storage.user["name"] = "Vardenis Pavardenis"
     return RedirectResponse(url="/main")
 
 
@@ -170,4 +171,4 @@ async def logout():
     return RedirectResponse(url="/")
 
 
-ui.run()
+ui.run(port=8006)
